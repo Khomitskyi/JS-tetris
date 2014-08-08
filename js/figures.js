@@ -43,6 +43,8 @@ function inverse(a) {
 }
 
 function turn(figure) {
+	/* To turn a figure 1) transpose matrix
+						2) reverse every row*/
     "use strict";
     return (inverse(transpose(figure)));
 }

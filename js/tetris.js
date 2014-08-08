@@ -8,6 +8,8 @@ var game = document.getElementById("game"),
     interval,
     i, w, h, d;
 
+//all globals, todo: reduce globals
+//size calculation
 w = window.screen.width;
 h = window.screen.height;
 d = (h * 0.9) / 16  - 5;
@@ -18,6 +20,9 @@ ctx.strokeRect(0, 0, game.width, game.height);
 
 
 function gameInit() {
+	/*
+		Creates and returns game board which is zero array 16X10
+	*/
     "use strict";
     var i, j,
         row,
@@ -35,6 +40,11 @@ function gameInit() {
 }
 
 function render(board) {
+	/*
+		Draws game board on canvas 
+			0 - Empty(White)
+			1 - Filled(Black)
+	*/
     "use strict";
     var i, j;
     for (i = 0; i < properties.rows; i += 1) {
@@ -49,15 +59,9 @@ function render(board) {
     ctx.strokeRect(0, 0, game.width, game.height);
 }
 
-function test(board) {
-    "use strict";
-    board[15][9] = 1;
-    board[0][0] = 1;
-    return board;
-}
-
 
 function copyMatrix(A) {
+	/* Returns another instance of matrix A */
     "use strict";
     var i, j, n, m, B, row;
     n = A.length;
@@ -75,13 +79,22 @@ function copyMatrix(A) {
 
 
 function place(board, position) {
+	/*
+		Add (global) currentFigure to board;
+		position -> holds previous position.
+			1) make copy of current board
+			2) erase currentFigure from board
+			3) if lands -> create new currentFigure
+			4) if collision return old board
+			5) else add figure and return board
+	*/
     "use strict";
     var i, j, n, m, copyBoard, d;
     copyBoard = copyMatrix(board);
     position = position || {"x": currentFigure.position["x"], "y": currentFigure.position["y"]};
     n = currentFigure.matrix.length;
     m = currentFigure.matrix[0].length;
-    board = remove(board, position);
+    board = remove(board, position); 
     for (i = 0; i < n; i += 1) {
         for (j = 0; j < m; j += 1) {
             d = currentFigure.position["y"] + i;
@@ -124,6 +137,7 @@ function place(board, position) {
 
 
 function remove(board, position) {
+	/* Remove currentFigure from previous position */
     "use strict";
     var i, j, n, m, oldFigure;
     if (position["x"] === currentFigure.position["x"] && position["y"] === currentFigure.position["y"]) {
@@ -144,6 +158,7 @@ function remove(board, position) {
 }
 
 function move(board, direction) {
+	/* move currentFigure on board in certain direction */
     "use strict";
     var i, j, n, m,
         futureBoard = copyMatrix(board),
@@ -169,13 +184,14 @@ function move(board, direction) {
     }
     
     
-    render(futureBoard);
+    render(futureBoard); // draw board
     return futureBoard;
 }
 
 
 
 function clearRow(board) {
+	/*remove filled row*/
     "use strict";
     var i, j, n, m, ones, rows;
     n = board.length;

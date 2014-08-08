@@ -33,6 +33,7 @@ function keyPress(key) {
 
 window.addEventListener('load', function () { // on page load
     "use strict";
+	/* tap on differen areas of canvas*/
     document.getElementById('game').addEventListener('touchstart', function (e) {
         var tap = e.changedTouches[0];
         //alert(tap.pageX);
