@@ -32,8 +32,21 @@ function keyPress(key) {
 }
 
 window.addEventListener('load', function () { // on page load
-    document.body.addEventListener('touchstart', function (e) {
-        alert(e.changedTouches[0].pageX); // alert pageX coordinate of touch point
+    "use strict";
+    document.getElementById('game').addEventListener('touchstart', function (e) {
+        var tap = e.changedTouches[0];
+        //alert(tap.pageX);
+        if (tap.pageY < d * 4.5) {
+            currentFigure.matrix = turn(currentFigure.matrix);
+            gameField = move(gameField, 'turn');
+        } else if (tap.pageY > d * 12.5) {
+            gameField = move(gameField);
+        } else if (tap.pageX < d * 5) {
+            gameField = move(gameField, 'left');
+        } else {
+            gameField = move(gameField, 'right');
+        }
+        
     }, false);
  
 }, false);

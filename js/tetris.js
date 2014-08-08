@@ -6,10 +6,14 @@ var game = document.getElementById("game"),
     figures,
     currentFigure = {},
     interval,
-    i;
+    i, w, h, d;
 
-game.width = 450;
-game.height = 720;
+w = window.screen.width;
+h = window.screen.height;
+d = (h * 0.9) / 16  - 5;
+game.height =d * 16;
+game.width = 10 * d;
+
 ctx.strokeRect(0, 0, game.width, game.height);
 
 
@@ -36,9 +40,9 @@ function render(board) {
     for (i = 0; i < properties.rows; i += 1) {
         for (j = 0; j < properties.cols; j += 1) {
             if (board[i][j] === 1) {
-                ctx.fillRect(j * 45, i * 45, 45, 45);
+                ctx.fillRect(j * d, i * d, d, d);
             } else {
-                ctx.clearRect(j * 45, i * 45, 45, 45);
+                ctx.clearRect(j * d, i * d, d, d);
             }
         }
     }
@@ -211,7 +215,7 @@ function newGame() {
     newFigure();
     place(gameField);
     render(gameField);
-    //interval = setInterval(tick, 250);
+    interval = setInterval(tick, 250);
     return gameField;
 }
 
