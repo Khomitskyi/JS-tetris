@@ -1,53 +1,50 @@
-document.body.onkeydown = function (e) {
+function Conroller(tetris) {
     "use strict";
-    var keys = {
-        37: 'left',
-        39: 'right',
-        40: 'down',
-        38: 'rotate'
-    };
-    if (typeof keys[e.keyCode] !== 'undefined') {
-        keyPress(keys[e.keyCode]);
-        render(gameField);
-    }
-};
 
-function keyPress(key) {
-    "use strict";
-    switch (key) {
-    case 'left':
-        gameField = move(gameField, 'left');
-        break;
-    case 'right':
-        gameField = move(gameField, 'right');
-        break;
-    case 'down':
-        gameField = move(gameField);
-        break;
-    case 'rotate':
-        currentFigure.matrix = turn(currentFigure.matrix);
-        gameField = move(gameField, 'turn');
-        break;
+
+
+    function keyPress(key) {
+        //"use strict";
+        switch (key) {
+        case 'left':
+            //alert(key);
+            break;
+        case 'right':
+            //alert(key);
+            break;
+        case 'down':
+            //alert(key);
+            break;
+        case 'rotate':
+            //alert(key);
+            break;
+        }
+        tetris.move(key);
     }
+    
+    
+
+    document.body.onkeydown = function (e) {
+        //"use strict";
+        var keys = {
+            37: 'left',
+            39: 'right',
+            40: 'down',
+            38: 'rotate'
+        };
+        if (typeof keys[e.keyCode] !== 'undefined') {
+            keyPress(keys[e.keyCode]);
+        }
+    };
+    
+    
+    
+    this.start = function (speed) {
+        var interval = setInterval(tetris.move, speed);
+    };
+
 }
 
-window.addEventListener('load', function () { // on page load
-    "use strict";
-	/* tap on differen areas of canvas*/
-    document.getElementById('game').addEventListener('touchstart', function (e) {
-        var tap = e.changedTouches[0];
-        //alert(tap.pageX);
-        if (tap.pageY < d * 4.5) {
-            currentFigure.matrix = turn(currentFigure.matrix);
-            gameField = move(gameField, 'turn');
-        } else if (tap.pageY > d * 12.5) {
-            gameField = move(gameField);
-        } else if (tap.pageX < d * 5) {
-            gameField = move(gameField, 'left');
-        } else {
-            gameField = move(gameField, 'right');
-        }
-        
-    }, false);
- 
-}, false);
+var c = new Conroller(a);
+//c.start(300);
+
