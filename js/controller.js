@@ -1,6 +1,7 @@
 function Conroller(tetris) {
     "use strict";
 
+    var c = document.getElementById("game");
 
 
     function keyPress(key) {
@@ -38,6 +39,16 @@ function Conroller(tetris) {
     };
     
     
+    c.addEventListener('touchstart', function (e) {
+        var x = e.changedTouches[0].clientX - c.offsetLeft,
+            y = e.changedTouches[0].clientY - c.offsetTop,
+            d = c.clientWidth / 10;
+        //alert((e.changedTouches[0].clientX - c.offsetLeft) + "  " + (e.changedTouches[0].clientY - c.offsetTop));
+        if (y < 5 * d) { tetris.move('rotate');
+            } else if (y > 11 * d) { tetris.move('down');
+            } else if (x < 5 * d) { tetris.move('right');
+            } else { tetris.move('left'); }
+    }, false);
     
     this.start = function (speed) {
         var interval = setInterval(tetris.move, speed);
@@ -46,5 +57,5 @@ function Conroller(tetris) {
 }
 
 var c = new Conroller(a);
-//c.start(300);
+c.start(300);
 

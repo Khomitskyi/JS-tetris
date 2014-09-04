@@ -6,8 +6,10 @@ function Tetris(id) {
         properties = {"cols": 10, "rows": 16},
         figures,
         gameField,
-        d = 45,
+        d = 10,
         currentFigure = {},
+        gameStatus = 'OFF',
+        points = 0,
         
         initField = function () {
             var i, j,
@@ -83,15 +85,18 @@ function Tetris(id) {
         },
         
         clearRow = function (field) {
-            var i, j, n;
+            var i, j, n, k;
             function product(x, y) {return x * y; }
             n = field.length;
+            k = 0;   //num rows to clear
             for (i = 0; i < n; i += 1) {
                 if (field[i].reduce(product, 1) === 1) {
+                    k += 1;
                     field.splice(i, 1);
                     field.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
                 }
             }
+            points += k * k;
             return field;
         },
         
@@ -101,6 +106,8 @@ function Tetris(id) {
             currentFigure.matrix = figures[id];
             currentFigure.position = {"x": 4, "y": 0};
             gameField = clearRow(gameField);
+            
+            //render(place(gameField));
             
         },
         
@@ -186,6 +193,26 @@ function Tetris(id) {
             
         },
         
+        gamover = function (field, I) {
+            var i, j, S;
+            S = count(currentFigure.matrix);
+
+            for (i = (S.n - I - 1); i < S.n; i += 1) {
+                for (j = 0; j < S.m; j += 1) {
+                    if (currentFigure.matrix[i][j] === 1) {
+                        field[currentFigure.position.y + i - 1][currentFigure.position.x + j] = 1;
+                    }
+                }
+            }
+            render(field);
+            gameStatus = "OFF";
+            alert("Game over. \n points: " + points);
+            points = 0;
+            field = initField();
+            return field;
+            
+        },
+        
         place = function (field, oldPosition) {
             var i, j, S,
                 copyField;
@@ -200,11 +227,7 @@ function Tetris(id) {
                             if (validateStep(copyField, i, j, oldPosition)) {
                                 copyField[currentFigure.position.y + i][currentFigure.position.x + j] = 1;
                             } else {
-                                if (oldPosition.y <= 0 && currentFigure.position.y <= 0) {
-                                    alert();
-                                    currentFigure.matrix = [[0]];
-                                    return copyField;
-                                }
+                                if (oldPosition.y === 0 && currentFigure.position.y === 0) { field = gamover(field, i); }
                                 return field;
                             }
                         }
@@ -217,15 +240,18 @@ function Tetris(id) {
         
         
     this.newGame = function () {
+        var dw = window.innerWidth,
+            dh = window.innerHeight;
+        points = 0;
         figures = initFigures();
+        d = Math.min(dw / 10 - 2, dh / 16 - 1);
         game.height = 16 * d;
         game.width = 10 * d;
         gameField = initField();
         newFigure();
         gameField = place(gameField);
-        //place(gameField);
         render(gameField);
-        //interval = setInterval(tick, 250);
+        gameStatus = "ON";
         return gameField;
     };
     
