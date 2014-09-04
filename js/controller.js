@@ -46,8 +46,8 @@ function Conroller(tetris) {
         //alert((e.changedTouches[0].clientX - c.offsetLeft) + "  " + (e.changedTouches[0].clientY - c.offsetTop));
         if (y < 5 * d) { tetris.move('rotate');
             } else if (y > 11 * d) { tetris.move('down');
-            } else if (x < 5 * d) { tetris.move('right');
-            } else { tetris.move('left'); }
+            } else if (x < 5 * d) { tetris.move('left');
+            } else { tetris.move('right'); }
     }, false);
     
     this.start = function (speed) {
